@@ -1,0 +1,4 @@
+<?php
+echo "<h1>Hello from CI/CD Pipeline!</h1>";
+echo "<p>Deployment successful.</p>";
+?>

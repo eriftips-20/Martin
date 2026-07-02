@@ -1,0 +1,43 @@
+name: PHP CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Docker Image
+        run: docker build -t php-app .
+
+      - name: Test Container
+        run: |
+          docker run -d --name test-app -p 8080:80 php-app
+          sleep 5
+          curl http://localhost:8080
+          docker stop test-app
+          docker rm test-app
+
+  deploy:
+
+    needs: build
+
+    runs-on: self-hosted
+
+    steps:
+
+      - uses: actions/checkout@v4
+
+      - name: Deploy
+        run: |
+          chmod +x deploy.sh
+          ./deploy.sh
