@@ -4,22 +4,19 @@ on:
   push:
     branches:
       - main
+      - "feature/**"
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v4
 
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Build Docker Image
+      - name: Build Docker image
         run: docker build -t php-app .
 
-      - name: Test Container
+      - name: Test application
         run: |
           docker run -d --name test-app -p 8080:80 php-app
           sleep 5
@@ -28,16 +25,12 @@ jobs:
           docker rm test-app
 
   deploy:
-
+    if: github.ref == 'refs/heads/main'
     needs: build
-
     runs-on: self-hosted
 
     steps:
-
       - uses: actions/checkout@v4
 
       - name: Deploy
-        run: |
-          chmod +x deploy.sh
-          ./deploy.sh
+        run: ./deploy.sh
