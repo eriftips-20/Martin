@@ -80,7 +80,7 @@ $message = "Welcome to our website!";
         This is a simple landing page template.
     </p>
 
-    <a href="#contact" class="btn">Get Started</a>
+    <a href="#contact" class="btn">Get Started off</a>
 
     <footer>
         &copy; <?php echo date("Y"); ?> My Company. All rights reserved.
